@@ -1,0 +1,10 @@
+<div
+  #stackedCardsContainer
+  class="stacked-cards-container"
+  (mousedown)="onSwipeStart($event)"
+  (touchstart)="onSwipeStart($event)"
+  (mouseup)="onSwipeEnd($event)"
+  (touchend)="onSwipeEnd($event)"
+>
+  <ng-content></ng-content>
+</div>

@@ -1,0 +1,80 @@
+.stacked-cards-container {
+  position: relative;
+  width: 100%;
+  height: 300px; // Ajuste conforme necessário
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+[card] {
+  position: absolute;
+  width: 90%; // Tamanho dos cartões
+  max-width: 300px; // Para não ficarem muito grandes em telas grandes
+  height: 80%; // Altura dos cartões
+  background-color: red;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+  will-change: transform, opacity;
+}
+
+// Exemplo de classes para controlar a posição dos cartões
+.card-1 {
+  transform: translateY(-20px) scale(0.9);
+  opacity: 0.8;
+}
+.card-2 {
+  transform: translateY(-40px) scale(0.8);
+  opacity: 0.6;
+}
+.card-3 {
+  transform: translateY(-60px) scale(0.7);
+  opacity: 0.4;
+}
+// Adicione mais conforme necessário, ajuste estes valores conforme desejar
+
+.card.active {
+  transition: transform 0.5s ease-in-out;
+}
+
+.card-move-out-left {
+  animation: moveOutLeft 0.5s forwards;
+}
+
+.card-move-out-right {
+  animation: moveOutRight 0.5s forwards;
+}
+
+.card-come-in {
+  animation: comeIn 0.5s forwards;
+}
+
+@keyframes moveOutLeft {
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes moveOutRight {
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes comeIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
