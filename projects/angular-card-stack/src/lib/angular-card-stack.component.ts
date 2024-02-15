@@ -7,6 +7,7 @@ import {
   HostListener,
   QueryList,
   ViewChild,
+  ViewEncapsulation,
 } from '@angular/core';
 
 @Directive({
@@ -22,6 +23,7 @@ export class CardDirective {
   imports: [],
   templateUrl: './angular-card-stack.component.html',
   styleUrls: ['./angular-card-stack.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class AngularCardStack implements AfterContentInit {
   private startX: number | undefined;
@@ -71,24 +73,42 @@ export class AngularCardStack implements AfterContentInit {
       endY = (event as MouseEvent).clientY;
     }
 
-    if (Math.abs(endX - this.startX!) > Math.abs(endY - this.startY!)) {
-      if (endX < this.startX!) {
+    if (this.startX !== undefined && Math.abs(endX - this.startX) > 40) {
+      if (endX < this.startX) {
         console.log('Swipe left');
+        this.moveCardOut('left');
       } else {
         console.log('Swipe right');
+        this.moveCardOut('right');
       }
     }
   }
 
-  updateCardPositions() {
+  moveCardOut(direction: 'left' | 'right'): void {
+    if (this.cards && this.cards.length > 0) {
+      const currentCardEl =
+        this.cards.toArray()[this.activeCardIndex].el.nativeElement;
+      currentCardEl.classList.add(
+        direction === 'left' ? 'card-move-out-left' : 'card-move-out-right'
+      );
+
+      setTimeout(() => {
+        this.activeCardIndex = (this.activeCardIndex + 1) % this.cards!.length;
+        this.updateCardPositions();
+      }, 500);
+    }
+  }
+
+  updateCardPositions(): void {
     this.cards?.forEach((card, index) => {
       const cardElement = card.el.nativeElement;
       cardElement.className = 'card';
-      if (index < this.activeCardIndex) {
-        cardElement.classList.add('card-move-out');
-      } else {
-        const position = index - this.activeCardIndex;
-        cardElement.classList.add(`card-${position}`);
+      const positionIndex =
+        (index - this.activeCardIndex + this.cards!.length) %
+        this.cards!.length;
+      cardElement.classList.add(`card-${positionIndex}`);
+      if (index === this.activeCardIndex) {
+        cardElement.classList.add('active');
       }
     });
   }
